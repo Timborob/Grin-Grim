@@ -1,7 +1,7 @@
 from scene import *
 import sound
 import math as ma
-from GG_Levels import levels, colors
+#from GG_Levels import levels, colors
 import photos
 
 A = Action
