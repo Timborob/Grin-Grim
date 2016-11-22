@@ -314,23 +314,19 @@ class GG1(Scene):
 		
 		#lines = level_str.splitlines()
 		
-		level1 = '''
-		aaaaaaaaaaaa
-		aaaaa    aaa   
-		aaaaaa  aaaa
-		a aaa      a
-		aaaaaaaaaaaa
-		'''
-		lines = level1.splitlines()
-		block_w = self.size.w/15
-		block_h = self.size.h/5
+		level1 = (	('''aaaaaaaaaaaa'''),
+				('''aaaaa    aaa'''), 
+				('''aaaaaa  aaaa'''),
+				('''a aaa      a'''),
+				('''aaaaaaaaaaaa'''))
+
+		block_w = self.size.w/(len(level1[1]))
+		block_h = self.size.h/(len(level1))
 		
-		min_x = 0
-		min_y = 0
-		
-	
-		
-		for y, line in enumerate(reversed(lines)):
+		min_x = block_w/2
+		min_y = block_h/2
+
+		for y, line in enumerate(reversed(level1)):
 			for x, char in enumerate(line):
 				if char == ' ': continue
 				pos = Point(x * block_w + min_x, min_y + y * block_h)
@@ -341,7 +337,6 @@ class GG1(Scene):
 			b.scale = 0
 			b.run_action(A.sequence(A.wait(i*0.01), A.scale_to(1, 0.25, 4)))
 		
-				
 				
 	###Grim Turn Start 	
 	def Grim_Turn(self, grim):
