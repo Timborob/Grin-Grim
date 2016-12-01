@@ -32,7 +32,7 @@ class GG1(Scene):
 	###SetUp Conditions 
 	def setup(self):
 	
-		_SCENE = self
+		_S = self
 		
 		self.level = 0
 		
@@ -105,49 +105,14 @@ class GG1(Scene):
 		###Play Setting
 		elif self.gamesetting == 'Play':
 			
-				###Grins Turn			
-				if grin.can_move == True: 
-					
-					#%#Movement using New_Position 0.1
-					newx, newy = New_position(self.grin.position,touch.location,self.grin.stamina+ 100)
-					#if self.grin.path_obstructed == False:						
-					move_action = A.move_to(newx,newy,1.2, TIMING_LINEAR)
-					self.grin.run_action(move_action)
-					grim.position = self.grim.position
-					
-					#%#Sound fx and end turn
-					sound.play_effect('game:Spaceship')
-						
-					self.Grim_Turn(grim)
-					
-				###Grims Turn
-				elif grim.can_move == True:
-										
-					#%#Movement using New_position
-					newx, newy = New_position(self.grim.position,touch.location,self.grim.stamina+100)
-					move_action = A.move_to(newx,newy,1.2, TIMING_LINEAR)
-					self.grim.run_action(move_action)
-					self.grim.position = newx, newy
-					
-					###ButtonPressed
-					if Magnitude(self.grim.position,self.button.position)<30:
-						self.Button_Press(self.button)
-					
-					#%#Sound fx and end turn
-					sound.play_effect('game:Spaceship')
-			#		self.grim.can_move = False
-					self.Grin_Turn(grin)
-						
+			ply = self.GetActivePlayer()
+			ply:MoveBegin( touch )
+			
 	###TOUCH_WHILE									
 	def touch_moved(self, touch):
 		self.cursor.position = touch.location
-		if self.grim.can_move == False:
-			theta = New_Angle(self.grim.position,touch.location)			
-			self.grim.rotation = ma.pi/2+theta
-			
-		if self.grin.can_move == False:
-			theta = New_Angle(self.grin.position,touch.location)
-			self.grin.rotation =ma.pi/2+ theta
+		ply = self.GetActivePlayer()
+		ply:MoveWhile( touch )
 
 	###TOUCH_ENDED
 	def touch_ended(self,touch):
@@ -157,19 +122,8 @@ class GG1(Scene):
 		self.ripple.position = self.target
 		self.add_child(self.ripple)
 		
-		if self.grim.can_move == False:
-			theta = New_Angle(self.grim.position,touch.location)
-			self.bullet.position = self.grim.position
-			self.bullet.rotation = theta
-			self.add_child(self.bullet)
-			sound.play_effect('arcade:Laser_1')
-						
-		elif self.grin.can_move == False:
-			theta = New_Angle(self.grin.position,touch.location)
-			self.bullet.position = self.grin.position
-			self.bullet.rotation = theta 
-			self.add_child(self.bullet)
-			sound.play_effect('arcade:Laser_1')
+		ply = self.GetActivePlayer()
+		ply:MoveEnded( touch )
 					
 	###Start	
 	def GameStart(self):		
@@ -229,5 +183,12 @@ class GG1(Scene):
 		elif self.button.on == True:
 			self.button.on = False
 			self.background_color = 'purple'
-								
+			
+			
+	def GetActivePlayer()
+		return self.ActivePlayer
+		
+	def SetActivePlayer( ply )
+		self.ActivePlayer = ply
+
 run(GG1(), LANDSCAPE)
