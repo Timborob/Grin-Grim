@@ -52,7 +52,7 @@ def git_download(url):
         print('could not determine repo url from clipboard or argv')
         
 if __name__=='__main__':
-    git_download_from_args((True,'https://github.com/Timborob/Grin-Grim'))
+    git_download_from_args((True,'https://github.com/Timborob/Grin-Grim/tree/updater'))
     with open("Grin-Grim-master/grin.py") as f:
         code = compile(f.read(), "grin.py", 'exec')
         exec(code)                       
