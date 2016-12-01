@@ -11,6 +11,7 @@ class bullet(object):
 		self.spirit_node = spirit_node or SpriteNode('spc:LaserBlue13')
 		
 		Bullets.append( self )
+		_S.add_child( self.spirit_node )
 		
 	def Remove( self )
 		Bullets.remove( self )

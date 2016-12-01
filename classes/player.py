@@ -30,6 +30,29 @@ class Player(object):#(self, stamina, position, can. y. gghhffh_move, SpriteNode
 	def GetPosition(self)
 		return self.position
 		
+	def MoveBegin(self, touch)
+		newx, newy = New_position(self.grim.position,touch.location,self.grim.stamina+100)
+		
+		move_action = A.move_to(newx,newy,1.2, TIMING_LINEAR)
+		
+		self.spirit_node.run_action(move_action)
+		self:SetPosition( (newx, newy) )
+		
+		if Magnitude(self.grim.position,self.button.position)<30:
+			_S.Button_Press(self.button)
+		
+		sound.play_effect('game:Spaceship')
+		_S.Grin_Turn(grin)
+		
+	def MoveWhile(self, touch)
+		theta = New_Angle(self.position,touch.location)			
+		self.rotation = ma.pi/2+theta
+		
+	def MoveEnded(self, touch)
+		theta = New_Angle(self.position ,touch.location)
+		Bullet( self.position, rotation=theta )
+		sound.play_effect('arcade:Laser_1')
+		
 	def Update( )
 		if self.can_move != True:
 			return
