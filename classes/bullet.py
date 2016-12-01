@@ -5,10 +5,11 @@ Bullets = []
 class bullet(object):
 	def __init__(self,position,type,rotation,spirit_node):
 		self.position = position
-		self.speed = 2000
+		self.speed = 50
 		self.type = type
 		self.theta = rotation
 		self.spirit_node = spirit_node or SpriteNode('spc:LaserBlue13')
+		self.spirit_node.size = 0.5
 		
 		Bullets.append( self )
 		_S.add_child( self.spirit_node )

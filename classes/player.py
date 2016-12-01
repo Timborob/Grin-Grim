@@ -14,6 +14,7 @@ class Player(object):#(self, stamina, position, can. y. gghhffh_move, SpriteNode
 		
 	def Remove( self )
 		Players.remove(self)
+		self.spirit_node.remove_from_parent()
 		
 	def SetStamina(self, stamina)
 		self.stamina = stamina
@@ -42,7 +43,7 @@ class Player(object):#(self, stamina, position, can. y. gghhffh_move, SpriteNode
 			_S.Button_Press(self.button)
 		
 		sound.play_effect('game:Spaceship')
-		_S.Grin_Turn(grin)
+		_S.SwapActivePlayer()
 		
 	def MoveWhile(self, touch)
 		theta = New_Angle(self.position,touch.location)			
@@ -54,8 +55,6 @@ class Player(object):#(self, stamina, position, can. y. gghhffh_move, SpriteNode
 		sound.play_effect('arcade:Laser_1')
 		
 	def Update( )
-		if self.can_move != True:
-			return
 		
 		for k,bullet in Bullets:
 			if self.spirit_node.bbox.contains_point( bullet.position ):
