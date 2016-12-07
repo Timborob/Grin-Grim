@@ -1,3 +1,5 @@
+import math as ma
+
 def Magnitude(point1,point2):
 	a, b = point1
 	x, y = point2	
