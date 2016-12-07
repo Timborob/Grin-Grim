@@ -6,6 +6,7 @@ from classes.player import Player
 from classes.block import Block
 from classes.bullet import bullet
 
+
 import util.gg_math
 
 from GG_Levels import *
@@ -15,13 +16,12 @@ A = Action
 #####___GRiM - initial stamina, position and can move
 GRiM_STaMina = 100
 GriM_position = (256,120)
-grim = Player(GRiM_STaMina, GriM_position, SpriteNode('spc:CockpitRed1'))							
+grim = Player(GRiM_STaMina, GriM_position,True,'spc:CockpitRed1')					
 
 #####___GRiN 
 GRin_StaMina = 100
 GRIN_positiON = (140,568)
-grin = Player(GRin_StaMina, GRIN_positiON, SpriteNode('spc:CockpitGreen1') )
-
+grin = Player(GRin_StaMina, GRIN_positiON,False,'spc:CockpitGreen1') 
 
 ##%%## -GG1 -Grin n Grim Test Room ***
 class GG1(Scene):
@@ -50,13 +50,13 @@ class GG1(Scene):
 		
 		self.Menu()
 	
-	def update(self)
+	def update(self):
 		
-		for k,player in Players:
-			player:Update()
+		for k,player in enumerate(Player.GetAll()):
+			player.Update()
 			
-		for k,bullet in Bullets:
-			bullet:Update()
+		for k,bullets in enumerate(bullet.GetAll()):
+			bullets.Update(self)
 			
 				
 	###Menu Screen
@@ -88,12 +88,12 @@ class GG1(Scene):
 			
 		###Play Setting
 		elif self.gamesetting == 'Play':
-			self.GetActivePlayer():MoveBegin( touch )
+			self.GetActivePlayer().MoveBegin( touch )
 			
 	###TOUCH_WHILE									
 	def touch_moved(self, touch):
 		self.cursor.position = touch.location
-		self.GetActivePlayer():MoveWhile( touch )
+		self.GetActivePlayer().MoveWhile( touch )
 
 	###TOUCH_ENDED
 	def touch_ended(self,touch):
@@ -103,7 +103,7 @@ class GG1(Scene):
 		self.ripple.position = self.target
 		self.add_child(self.ripple)
 		
-		self.GetActivePlayer():MoveEnded( touch )
+		self.GetActivePlayer().MoveEnded( touch )
 					
 	###Start	
 	def GameStart(self):		
@@ -111,14 +111,18 @@ class GG1(Scene):
 		###Background
 		self.background_color = 'blue'
 		
-		self.add_child( grim.spirit_node )
-		self.add_child( grin.spirit_node )
+		
+		self.grim = SpriteNode('iob:alert_24')
+		self.grin =SpriteNode('iob:alert_24')
+		
+		self.add_child( self.grim )
+		self.add_child( self.grin )
 		
 		###Buttons And Switches
 		self.button.position = self.size/2
 		self.add_child(self.button)
 	
-		LoadLevel( level1 )
+		LoadLevel(self,level1 )
 	
 	def Button_Press(self,button):
 		
@@ -133,16 +137,16 @@ class GG1(Scene):
 			self.background_color = 'purple'
 			
 			
-	def GetActivePlayer()
+	def GetActivePlayer(self):
 		return self.ActivePlayer
 		
-	def SetActivePlayer( ply )
+	def SetActivePlayer( self, ply ):
 		self.ActivePlayer = ply
 		
-	def SwapActivePlayer()
+	def SwapActivePlayer(self):
 		if self.ActivePlayer == grin:
 			self.SetActivePlayer( grim )
-		elif:
+		else:
 			self.SetActivePlayer( grin )
 			
 run(GG1(), LANDSCAPE)
